@@ -43,10 +43,15 @@ RUN --mount=type=bind,from=xray-builder,source=/tmp/bin,target=/usr/src/xray,rea
         && cd ${tempDir} \
         # Deploy(Part 2)
         && echo '{}' > /etc/xray/config.json \
+        && touch /var/log/xray/access.log \
+        && touch /var/log/xray/error.log \
         && wget --output-document=/usr/share/xray/geosite.dat https://github.com/v2fly/domain-list-community/releases/latest/download/dlc.dat \
         && wget --output-document=/usr/share/xray/geoip.dat https://github.com/v2fly/geoip/releases/latest/download/geoip.dat \
         " \
-    && rm -rf ${tempDir}
+    && rm -rf ${tempDir} \
+    # Forward access and error logs to docker log collector
+    && ln -sf /dev/stdout /var/log/xray/access.log \
+    && ln -sf /dev/stderr /var/log/xray/error.log
 
 RUN rm -rf /usr/src
 
