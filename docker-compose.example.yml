@@ -1,0 +1,16 @@
+version: '3.1'
+services:
+  xray:
+    build:
+      context:
+        .
+    restart: unless-stopped
+    ports:
+      - 127.0.0.1:9000:9000
+    environment:
+      # https://xtls.github.io/en/config/features/env.html
+      # XRAY_LOCATION_CONFDIR: /etc/xray/ # Enable multi-config mode
+    volumes:
+      - ./config.conf:/etc/xray/config.json
+      - ./geosite.dat:/usr/share/xray/geosite.dat
+      - ./geoip.dat:/usr/share/xray/geoip.dat
