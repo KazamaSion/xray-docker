@@ -24,7 +24,7 @@ RUN set -x \
         && CGO_ENABLED=0 go build -o /tmp/bin/xray -trimpath -ldflags '-s -w -buildid=' ./main \
         "
 
-FROM alpine:latest
+FROM ${ARCH}alpine:latest
 
 LABEL maintainer="Sion Kazama <13185633+KazamaSion@users.noreply.github.com>"
 ENV XRAY_LOCATION_ASSET=/usr/share/xray/ XRAY_LOCATION_CONFIG=/etc/xray/
